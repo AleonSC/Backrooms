@@ -32,6 +32,23 @@ namespace Backrooms
         public BackroomsWorld World { get; private set; }
         public FirstPersonController Player { get; private set; }
 
+#if !BACKROOMS_NO_AUTOSTART
+        /// <summary>
+        /// Starts the Backrooms in whatever scene is played if that scene doesn't already
+        /// contain a bootstrap. Define BACKROOMS_NO_AUTOSTART to turn this off.
+        /// </summary>
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+        static void AutoStart()
+        {
+#if UNITY_2022_2_OR_NEWER
+            bool present = FindAnyObjectByType<BackroomsBootstrap>() != null;
+#else
+            bool present = FindObjectOfType<BackroomsBootstrap>() != null;
+#endif
+            if (!present) new GameObject("Backrooms").AddComponent<BackroomsBootstrap>();
+        }
+#endif
+
         void Awake()
         {
             int s = randomSeed ? Random.Range(int.MinValue, int.MaxValue) : seed;

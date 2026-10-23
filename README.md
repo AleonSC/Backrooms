@@ -15,12 +15,15 @@ Unity generates `ProjectSettings/` the first time it opens the project.
 
 **Existing project:** copy `Assets/Backrooms` into your project's `Assets` folder.
 
-Then:
+Then press **Play** in any scene and click the Game view to capture the mouse.
+The level only exists in Play mode, so the Scene view stays empty until then.
 
-1. Choose **Backrooms > Create Backrooms Scene** from the menu bar. This saves
-   `Assets/Backrooms/Backrooms.unity` and adds it to the build settings.
-   You can also add a `BackroomsBootstrap` component to an empty GameObject in any scene.
-2. Press **Play** and click the Game view to capture the mouse.
+The level starts automatically in any scene that doesn't already contain a
+`BackroomsBootstrap`. It turns off the scene's existing cameras and directional
+lights. To control this yourself, define `BACKROOMS_NO_AUTOSTART` in
+*Project Settings > Player > Scripting Define Symbols*. Then either choose
+**Backrooms > Create Backrooms Scene**, or add a `BackroomsBootstrap` component to
+an empty GameObject.
 
 ## Controls
 
