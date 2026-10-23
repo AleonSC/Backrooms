@@ -36,6 +36,10 @@ Then:
 | Esc | Release the cursor |
 
 Input works with the legacy Input Manager and with the Input System package.
+The project's `Packages/manifest.json` installs the Input System package. If you
+copy `Assets/Backrooms` into another project with *Active Input Handling* set to
+*Input System* (the default in Unity 6), install the Input System package from
+the Package Manager or set *Active Input Handling* to *Both*.
 
 ## How it works
 

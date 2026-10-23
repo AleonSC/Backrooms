@@ -1,5 +1,5 @@
 using UnityEngine;
-#if ENABLE_INPUT_SYSTEM
+#if ENABLE_INPUT_SYSTEM && BACKROOMS_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
 
@@ -8,10 +8,13 @@ namespace Backrooms
     /// <summary>
     /// Thin input wrapper that works with either the new Input System package or the
     /// legacy Input Manager, whichever the project has enabled.
+    /// BACKROOMS_INPUT_SYSTEM is defined by Backrooms.Runtime.asmdef only when the
+    /// com.unity.inputsystem package is installed, because ENABLE_INPUT_SYSTEM alone
+    /// only reflects the player setting.
     /// </summary>
     public static class BackroomsInput
     {
-#if ENABLE_INPUT_SYSTEM
+#if ENABLE_INPUT_SYSTEM && BACKROOMS_INPUT_SYSTEM
         // Scale raw pixel deltas to roughly match the legacy "Mouse X/Y" axes.
         const float MouseScale = 0.1f;
 
@@ -39,7 +42,7 @@ namespace Backrooms
         public static bool DebugPressed => Pressed(Key.F3);
         public static bool ClickPressed => Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame;
         public static bool EscapePressed => Pressed(Key.Escape);
-#else
+#elif ENABLE_LEGACY_INPUT_MANAGER
         public static Vector2 Move
         {
             get
@@ -61,6 +64,31 @@ namespace Backrooms
         public static bool DebugPressed => Input.GetKeyDown(KeyCode.F3);
         public static bool ClickPressed => Input.GetMouseButtonDown(0);
         public static bool EscapePressed => Input.GetKeyDown(KeyCode.Escape);
+#else
+        // The project uses the new Input System, but the package isn't installed.
+        static bool warned;
+
+        static bool Missing()
+        {
+            if (!warned)
+            {
+                warned = true;
+                Debug.LogError("Backrooms: Active Input Handling is set to the Input System, but the " +
+                               "com.unity.inputsystem package is not installed. Install it from the Package Manager, " +
+                               "or set Project Settings > Player > Active Input Handling to 'Both'.");
+            }
+            return false;
+        }
+
+        public static Vector2 Move => Vector2.zero;
+        public static Vector2 Look => Vector2.zero;
+        public static bool Sprint => false;
+        public static bool Crouch => false;
+        public static bool JumpPressed => false;
+        public static bool FlashlightPressed => false;
+        public static bool DebugPressed => false;
+        public static bool ClickPressed => Missing();
+        public static bool EscapePressed => false;
 #endif
     }
 }

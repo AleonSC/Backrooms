@@ -1,0 +1,18 @@
+{
+    "name": "Backrooms.Editor",
+    "rootNamespace": "Backrooms.Editor",
+    "references": [
+        "Backrooms.Runtime"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
